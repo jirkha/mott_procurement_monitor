@@ -54,7 +54,7 @@ export default async function Home() {
   ]);
 
   const rows = zakazky.map(toZakazkaListRow);
-  const sourceOptions: SourceOption[] = sources.map((s) => ({
+  const sourceOptions: SourceOption[] = sources.map((s: SourceOption) => ({
     id: s.id,
     name: s.name,
   }));
