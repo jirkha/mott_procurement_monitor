@@ -11,6 +11,7 @@
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
+    "migrate:deploy:if-env": "node ./scripts/migrate-deploy-if-env.mjs",
     "studio": "prisma studio"
   },
   "dependencies": {

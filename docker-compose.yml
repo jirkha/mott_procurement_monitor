@@ -1,0 +1,12 @@
+# Lokální PostgreSQL — spusťte: docker compose up -d
+# Pak v apps/web/.env.local a packages/db/.env nastavte např.:
+# DATABASE_URL="postgresql://mott:mott@localhost:5432/mott_dev?schema=public"
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: mott
+      POSTGRES_PASSWORD: mott
+      POSTGRES_DB: mott_dev
+    ports:
+      - "5432:5432"

@@ -16,6 +16,7 @@
     "lint": "npm run lint -w @mott/web",
     "test": "npm run test -w @mott/web",
     "db:generate": "npm run generate -w @mott/db",
+    "db:migrate:deploy:if-env": "npm run migrate:deploy:if-env -w @mott/db",
     "db:migrate": "npm run migrate -w @mott/db",
     "db:studio": "npm run studio -w @mott/db",
     "probe-zdroje": "node apps/web/scripts/probe-zdroje.mjs",
