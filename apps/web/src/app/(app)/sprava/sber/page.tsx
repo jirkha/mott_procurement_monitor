@@ -1,3 +1,4 @@
+import type { IngestionRun } from "@prisma/client";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -132,7 +133,7 @@ export default async function SpravaSberPage() {
         </p>
       ) : (
         <ul className="space-y-3">
-          {runs.map((r) => (
+          {runs.map((r: IngestionRun) => (
             <li
               key={r.id}
               className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
