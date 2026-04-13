@@ -9,6 +9,16 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
+/** Výsledek `source.findMany` s `_count` — lokální typ kvůli stabilnímu typechecku v monorepu / na CI. */
+type SourceAdminRow = {
+  id: string;
+  slug: string;
+  name: string;
+  kind: string;
+  baseUrl: string | null;
+  _count: { zakazky: number };
+};
+
 export default async function SpravaZdrojePage() {
   const sources = await prisma.source.findMany({
     orderBy: { name: "asc" },
@@ -40,7 +50,7 @@ export default async function SpravaZdrojePage() {
         </p>
       ) : (
         <ul className="divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white shadow-sm">
-          {sources.map((s) => (
+          {sources.map((s: SourceAdminRow) => (
             <li
               key={s.id}
               className="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"

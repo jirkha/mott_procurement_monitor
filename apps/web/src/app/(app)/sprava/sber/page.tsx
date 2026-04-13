@@ -1,7 +1,16 @@
-import type { IngestionRun } from "@prisma/client";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+
+/** Odpovídá `IngestionRun` ve schématu — lokální typ (nezávisí na exportu modelu z `@prisma/client` na CI). */
+type IngestionRunListItem = {
+  id: string;
+  startedAt: Date;
+  finishedAt: Date | null;
+  status: string;
+  errorLog: string | null;
+  stats: unknown;
+};
 
 export const metadata: Metadata = {
   title: "Historie sběru — MOTT",
@@ -133,7 +142,7 @@ export default async function SpravaSberPage() {
         </p>
       ) : (
         <ul className="space-y-3">
-          {runs.map((r: IngestionRun) => (
+          {runs.map((r: IngestionRunListItem) => (
             <li
               key={r.id}
               className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
