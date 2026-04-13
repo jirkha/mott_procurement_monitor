@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+dist
+.env
+.env*.local
+*.log
+.DS_Store
+
+# SQLite (lokální vývoj)
+packages/db/prisma/*.db
+packages/db/prisma/*.db-journal
+
+# Python
+services/ingestion/.venv
+services/ingestion/__pycache__
+*.pyc

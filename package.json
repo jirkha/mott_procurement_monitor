@@ -1,0 +1,31 @@
+{
+  "name": "mott-procurement-monitor",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @mott/web",
+    "dev:clean": "npm run dev:clean -w @mott/web",
+    "clean:web": "npm run clean -w @mott/web",
+    "build": "npm run build -w @mott/web",
+    "start": "npm run start -w @mott/web",
+    "lint": "npm run lint -w @mott/web",
+    "test": "npm run test -w @mott/web",
+    "db:generate": "npm run generate -w @mott/db",
+    "db:migrate": "npm run migrate -w @mott/db",
+    "db:studio": "npm run studio -w @mott/db",
+    "probe-zdroje": "node apps/web/scripts/probe-zdroje.mjs",
+    "check:source-consistency": "node apps/web/scripts/check-source-consistency.mjs",
+    "ingest": "npm run ingest:run -w @mott/web",
+    "ingest:health-check": "node apps/web/scripts/ingest-health-check.mjs",
+    "ingest:post-audit": "node apps/web/scripts/post-ingest-audit.mjs",
+    "db:remove-source": "node apps/web/scripts/remove-source-zakazky.mjs",
+    "db:seed-admin": "node apps/web/scripts/seed-admin.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

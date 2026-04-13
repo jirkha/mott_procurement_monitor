@@ -1,0 +1,11 @@
+[
+  { "label": "SFDI — NEN slug SFDI", "nenProfile": "SFDI" },
+  { "label": "SFDI — NEN slug SFDI_CR", "nenProfile": "SFDI_CR" },
+  { "label": "SFDI — NEN slug StatniFondDopravniInfrastruktury", "nenProfile": "StatniFondDopravniInfrastruktury" },
+  { "label": "SFDI — TenderArena slug SFDI", "url": "https://www.tenderarena.cz/profily/SFDI/XMLdataVZ" },
+  { "label": "SFDI — TenderArena slug StatniFondDopravniInfrastruktury", "url": "https://www.tenderarena.cz/profily/StatniFondDopravniInfrastruktury/XMLdataVZ" },
+  { "label": "SFDI — E-ZAK odhad", "url": "https://zakazky.sfdi.cz/contract_index.html" },
+  { "label": "Správa železnic — TenderArena slug SZDC", "url": "https://www.tenderarena.cz/profily/SZDC/XMLdataVZ" },
+  { "label": "Správa železnic — TenderArena slug SpravaZeleznic", "url": "https://www.tenderarena.cz/profily/SpravaZeleznic/XMLdataVZ" },
+  { "label": "Správa železnic — TenderArena slug SpravaZeleznicniDopravniCesty", "url": "https://www.tenderarena.cz/profily/SpravaZeleznicniDopravniCesty/XMLdataVZ" }
+]

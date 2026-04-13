@@ -1,0 +1,4 @@
+# Python workers (Crawlee + Playwright) — fáze dle specifikace §4.1.
+# Po spuštění vývoje workerů doplnit např.:
+# crawlee[playwright]
+# playwright

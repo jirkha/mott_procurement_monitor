@@ -1,0 +1,171 @@
+// Lokální vývoj: SQLite — DATABASE_URL=file:./dev.db (relativně k této složce).
+// Produke: provider = postgresql + DATABASE_URL na Postgres.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum ZakazkaStatus {
+  NEW
+  IN_PROGRESS
+  CLOSED
+  IRRELEVANT
+}
+
+enum SourceKind {
+  API
+  RSS
+  SCRAPING
+  HYBRID
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  displayName  String?
+  role         UserRole @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  assignedZakazky Zakazka[]          @relation("AssignedZakazky")
+  zakazkaStates   UserZakazkaState[]
+  notifications   Notification[]
+  labelsCreated   Label[]            @relation("LabelCreatedBy")
+}
+
+model Source {
+  id        String     @id @default(cuid())
+  slug      String     @unique
+  name      String
+  kind      SourceKind
+  baseUrl   String?
+  isEnabled Boolean    @default(true)
+  config    Json?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  zakazky Zakazka[]
+}
+
+model Zakazka {
+  id             String        @id @default(cuid())
+  sourceId       String
+  source         Source        @relation(fields: [sourceId], references: [id])
+  externalRef    String?
+  title          String
+  description    String?
+  sourceUrl      String
+  publishedAt    DateTime?
+  deadline       DateTime?
+  contractType   String?
+  status         ZakazkaStatus @default(NEW)
+  rawPayload     Json?
+  buyerName      String?
+  estimatedValue String?
+  location       String?
+
+  disciplina       String?
+  keywords         Json?
+  recordUpdatedAt  DateTime?
+  /** Čas posledního úspěšného stažení/upsertu řádku při ingestu (ne čas z portálu). */
+  lastFetchedAt    DateTime?
+
+  assignedUserId String?
+  assignedUser   User?   @relation("AssignedZakazky", fields: [assignedUserId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  labels        ZakazkaLabel[]
+  states        UserZakazkaState[]
+  notifications Notification[]
+
+  @@unique([sourceId, externalRef])
+  @@index([publishedAt])
+  @@index([deadline])
+  @@index([sourceId])
+  @@index([disciplina])
+  @@index([disciplina, publishedAt])
+}
+
+model Label {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  color       String?
+  createdById String?
+  createdBy   User?    @relation("LabelCreatedBy", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+
+  zakazky ZakazkaLabel[]
+}
+
+model ZakazkaLabel {
+  zakazkaId String
+  labelId   String
+  zakazka   Zakazka @relation(fields: [zakazkaId], references: [id], onDelete: Cascade)
+  label     Label   @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([zakazkaId, labelId])
+}
+
+model Discipline {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  sortOrder Int      @default(0)
+  keywords  DisciplineKeyword[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DisciplineKeyword {
+  id           String     @id @default(cuid())
+  disciplineId String
+  discipline   Discipline @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
+  term         String
+
+  @@unique([disciplineId, term])
+  @@index([term])
+}
+
+model UserZakazkaState {
+  userId    String
+  zakazkaId String
+  seenAt    DateTime?
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  zakazka   Zakazka @relation(fields: [zakazkaId], references: [id], onDelete: Cascade)
+
+  @@id([userId, zakazkaId])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message   String
+  readAt    DateTime?
+  zakazkaId String?
+  zakazka   Zakazka?  @relation(fields: [zakazkaId], references: [id], onDelete: SetNull)
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt])
+}
+
+model IngestionRun {
+  id         String    @id @default(cuid())
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  status     String
+  errorLog   String?
+  stats      Json?
+}
