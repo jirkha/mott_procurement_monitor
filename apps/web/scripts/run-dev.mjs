@@ -9,6 +9,8 @@ import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { ensureDatabaseUrl } from "./load-database-url.mjs";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const appRoot = join(__dirname, "..");
 const lockPath = join(appRoot, ".next", "dev", "lock");
@@ -51,6 +53,8 @@ function tryReleaseDevLock() {
 }
 
 tryReleaseDevLock();
+
+ensureDatabaseUrl();
 
 const require = createRequire(import.meta.url);
 const nextPkgDir = dirname(

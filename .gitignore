@@ -10,6 +10,8 @@ dist
 # SQLite (lokální vývoj)
 packages/db/prisma/*.db
 packages/db/prisma/*.db-journal
+packages/db/prisma/sqlite/*.db
+packages/db/prisma/sqlite/*.db-journal
 
 # Python
 services/ingestion/.venv

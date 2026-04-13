@@ -50,8 +50,11 @@ if (!isPostgresUrl(databaseUrl)) {
   process.exit(0);
 }
 
-execSync("npx prisma migrate deploy", {
-  stdio: "inherit",
-  cwd: dbRoot,
-  env: { ...process.env, DATABASE_URL: databaseUrl },
-});
+execSync(
+  'npx prisma migrate deploy --schema=./prisma/schema.postgres.prisma',
+  {
+    stdio: "inherit",
+    cwd: dbRoot,
+    env: { ...process.env, DATABASE_URL: databaseUrl },
+  },
+);

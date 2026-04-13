@@ -1,6 +1,6 @@
-# Lokální PostgreSQL — spusťte: docker compose up -d
-# Pak v apps/web/.env.local a packages/db/.env nastavte např.:
-# DATABASE_URL="postgresql://mott:mott@localhost:5432/mott_dev?schema=public"
+# Volitelné: lokální PostgreSQL (výchozí vývoj je SQLite v packages/db/.env — file:./dev.db).
+# docker compose up -d  →  DATABASE_URL="postgresql://mott:mott@localhost:5432/mott_dev?schema=public"
+# + PRISMA_SCHEMA_TARGET=postgres u prisma generate, pokud chcete stejný engine jako na Vercelu.
 services:
   postgres:
     image: postgres:16-alpine

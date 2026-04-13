@@ -1,5 +1,9 @@
 import { PrismaClient } from "@mott/db";
 
+import { ensureDatabaseUrl } from "./resolve-database-url";
+
+ensureDatabaseUrl();
+
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };

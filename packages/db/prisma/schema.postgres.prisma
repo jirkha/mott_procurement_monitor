@@ -1,5 +1,5 @@
-// Lokální vývoj: PostgreSQL (Docker / lokální instance) — viz README.
-// Produkce (Vercel): DATABASE_URL na Postgres (Neon, Vercel Postgres, …).
+// Produkce (Vercel + Supabase / jiný Postgres). Držte modely v souladu s prisma/sqlite/schema.prisma.
+// Migrace: prisma/migrations/
 
 generator client {
   provider = "prisma-client-js"
@@ -75,11 +75,11 @@ model Zakazka {
   estimatedValue String?
   location       String?
 
-  disciplina       String?
-  keywords         Json?
-  recordUpdatedAt  DateTime?
-  /** Čas posledního úspěšného stažení/upsertu řádku při ingestu (ne čas z portálu). */
-  lastFetchedAt    DateTime?
+  disciplina      String?
+  keywords        Json?
+  recordUpdatedAt DateTime?
+  /// Čas posledního úspěšného stažení/upsertu řádku při ingestu (ne čas z portálu).
+  lastFetchedAt   DateTime?
 
   assignedUserId String?
   assignedUser   User?   @relation("AssignedZakazky", fields: [assignedUserId], references: [id])

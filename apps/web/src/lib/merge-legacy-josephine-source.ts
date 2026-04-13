@@ -19,7 +19,31 @@ export async function mergeLegacyJosephineSourcesIntoCanonical(prisma: PrismaCli
   if (!josephine) return;
 
   const canonicalSlug = slugifyDisplayName(josephine.sourceLabel);
-  const canonical = await prisma.source.findUnique({ where: { slug: canonicalSlug } });
+  let canonical;
+  try {
+    canonical = await prisma.source.findUnique({ where: { slug: canonicalSlug } });
+  } catch (e) {
+    // #region agent log
+    const err = e as { name?: string; message?: string; code?: string };
+    fetch("http://127.0.0.1:7650/ingest/16c7ab11-054f-481f-a5d7-92fab7987611", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "7de2c9" },
+      body: JSON.stringify({
+        sessionId: "7de2c9",
+        location: "merge-legacy-josephine-source.ts:findUnique",
+        message: "prisma.source.findUnique failed",
+        data: {
+          name: err?.name,
+          code: err?.code,
+          msgPrefix: typeof err?.message === "string" ? err.message.slice(0, 120) : String(e),
+        },
+        timestamp: Date.now(),
+        hypothesisId: "H1-H3-H4",
+      }),
+    }).catch(() => {});
+    // #endregion
+    throw e;
+  }
   if (!canonical) return;
 
   const legacy = await prisma.source.findMany({
